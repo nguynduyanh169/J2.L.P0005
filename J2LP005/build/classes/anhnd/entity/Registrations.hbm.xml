@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2021 8:57:17 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="anhnd.entity.Registrations" table="Registrations" schema="dbo" catalog="FamilyHealthcare" optimistic-lock="version">
+        <id name="registrationId" type="string">
+            <column name="RegistrationID" />
+            <generator class="assigned" />
+        </id>
+        <property name="fullname" type="string">
+            <column name="Fullname" />
+        </property>
+        <property name="phone" type="string">
+            <column name="Phone" />
+        </property>
+        <property name="email" type="string">
+            <column name="Email" />
+        </property>
+        <property name="address" type="string">
+            <column name="Address" />
+        </property>
+        <property name="age" type="java.lang.Integer">
+            <column name="Age" />
+        </property>
+        <property name="gender" type="java.lang.Boolean">
+            <column name="Gender" />
+        </property>
+        <property name="numberOfMember" type="java.lang.Integer">
+            <column name="NumberOfMember" />
+        </property>
+        <property name="numberOfChildren" type="java.lang.Integer">
+            <column name="NumberOfChildren" />
+        </property>
+        <property name="numberOfAdults" type="java.lang.Integer">
+            <column name="NumberOfAdults" />
+        </property>
+    </class>
+</hibernate-mapping>
