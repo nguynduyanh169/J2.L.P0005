@@ -17,11 +17,18 @@ import java.util.ArrayList;
  */
 public class RegistrationsRepositoryImpl implements IRegistrationsRepository{
 
-    private IRegistrationsDAO registrationsDAO = new RegistrationsDAO();
+    private IRegistrationsDAO registrationsDAO;
     
     @Override
     public ArrayList<Registrations> getAllRegistrations() {
+        registrationsDAO = new RegistrationsDAO();
         return registrationsDAO.findAllRegistrations();
+    }
+
+    @Override
+    public Registrations findByRegistrationID(String id) {
+        registrationsDAO = new RegistrationsDAO();
+        return registrationsDAO.findByRegistrationID(id);
     }
     
 }

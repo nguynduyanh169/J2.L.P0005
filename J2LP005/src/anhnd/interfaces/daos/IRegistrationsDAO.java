@@ -14,4 +14,6 @@ import java.util.ArrayList;
  */
 public interface IRegistrationsDAO {
     public ArrayList<Registrations> findAllRegistrations();
+    
+    public Registrations findByRegistrationID(String id);
 }

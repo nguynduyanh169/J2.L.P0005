@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class RegistrationsRMI extends UnicastRemoteObject implements IRegistrationsRMI{
     
-    private IRegistrationsRepository registrationsRepository = new RegistrationsRepositoryImpl();
+    private IRegistrationsRepository registrationsRepository;
     
     public RegistrationsRMI() throws RemoteException{
         
@@ -27,7 +27,14 @@ public class RegistrationsRMI extends UnicastRemoteObject implements IRegistrati
 
     @Override
     public ArrayList<Registrations> getAllRegistrations() throws RemoteException{
+        registrationsRepository = new RegistrationsRepositoryImpl();
         return registrationsRepository.getAllRegistrations();
+    }
+
+    @Override
+    public Registrations findByRegistrationID(String id) throws RemoteException {
+        registrationsRepository = new RegistrationsRepositoryImpl();
+        return registrationsRepository.findByRegistrationID(id);
     }
     
 }

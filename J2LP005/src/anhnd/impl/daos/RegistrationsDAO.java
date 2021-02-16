@@ -18,29 +18,46 @@ import org.hibernate.SessionFactory;
  *
  * @author anhnd
  */
-public class RegistrationsDAO implements IRegistrationsDAO{
-   private Session session;
-   
-   
-   public RegistrationsDAO(){
-       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-       session = sessionFactory.getCurrentSession();
-   }
-   
-   @Override
-   public ArrayList<Registrations> findAllRegistrations(){
-       ArrayList<Registrations> result = null;
-       try {
-           session.getTransaction().begin();
-           result = (ArrayList<Registrations>) session.createCriteria(Registrations.class).list();
-           session.flush();
-           session.getTransaction().commit();
-       } catch (Exception e) {
-           if(session.getTransaction().isActive()){
-               session.getTransaction().rollback();
-           }
-           e.printStackTrace();
-       }
-       return result;
-   }
+public class RegistrationsDAO implements IRegistrationsDAO {
+
+    private Session session;
+
+    public RegistrationsDAO() {
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.getCurrentSession();
+    }
+
+    @Override
+    public ArrayList<Registrations> findAllRegistrations() {
+        ArrayList<Registrations> result = null;
+        try {
+            session.getTransaction().begin();
+            result = (ArrayList<Registrations>) session.createCriteria(Registrations.class).list();
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Registrations findByRegistrationID(String id) {
+        Registrations registration = null;
+        try {
+            session.getTransaction().begin();
+            registration = (Registrations) session.get(Registrations.class, id);
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
+        return registration;
+    }
 }

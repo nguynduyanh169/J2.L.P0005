@@ -14,4 +14,6 @@ import java.util.ArrayList;
  */
 public interface IRegistrationsRepository {
     public ArrayList<Registrations> getAllRegistrations();
+    
+    public Registrations findByRegistrationID(String id);
 }

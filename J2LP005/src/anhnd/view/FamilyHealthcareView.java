@@ -5,6 +5,14 @@
  */
 package anhnd.view;
 
+import anhnd.controllers.RegistrationController;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 /**
  *
  * @author anhnd
@@ -17,6 +25,168 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
     public FamilyHealthcareView() {
         initComponents();
     }
+
+    public JButton getBtnFindID() {
+        return btnFindID;
+    }
+
+    public void setBtnFindID(JButton btnFindID) {
+        this.btnFindID = btnFindID;
+    }
+
+    public JButton getBtnGetAll() {
+        return btnGetAll;
+    }
+
+    public void setBtnGetAll(JButton btnGetAll) {
+        this.btnGetAll = btnGetAll;
+    }
+
+    public JButton getBtnNew() {
+        return btnNew;
+    }
+
+    public void setBtnNew(JButton btnNew) {
+        this.btnNew = btnNew;
+    }
+
+    public JButton getBtnRemove() {
+        return btnRemove;
+    }
+
+    public void setBtnRemove(JButton btnRemove) {
+        this.btnRemove = btnRemove;
+    }
+
+    public JButton getBtnSave() {
+        return btnSave;
+    }
+
+    public void setBtnSave(JButton btnSave) {
+        this.btnSave = btnSave;
+    }
+
+    public JButton getBtnSearchName() {
+        return btnSearchName;
+    }
+
+    public void setBtnSearchName(JButton btnSearchName) {
+        this.btnSearchName = btnSearchName;
+    }
+
+    public JComboBox<String> getCbSortByName() {
+        return cbSortByName;
+    }
+
+    public void setCbSortByName(JComboBox<String> cbSortByName) {
+        this.cbSortByName = cbSortByName;
+    }
+
+    public JRadioButton getRbFemale() {
+        return rbFemale;
+    }
+
+    public void setRbFemale(JRadioButton rbFemale) {
+        this.rbFemale = rbFemale;
+    }
+
+    public JRadioButton getRbMale() {
+        return rbMale;
+    }
+
+    public void setRbMale(JRadioButton rbMale) {
+        this.rbMale = rbMale;
+    }
+
+    public JTable getTblRegistration() {
+        return tblRegistration;
+    }
+
+    public void setTblRegistration(JTable tblRegistration) {
+        this.tblRegistration = tblRegistration;
+    }
+
+    public JTextArea getTxtAddress() {
+        return txtAddress;
+    }
+
+    public void setTxtAddress(JTextArea txtAddress) {
+        this.txtAddress = txtAddress;
+    }
+
+    public JTextField getTxtAge() {
+        return txtAge;
+    }
+
+    public void setTxtAge(JTextField txtAge) {
+        this.txtAge = txtAge;
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public void setTxtEmail(JTextField txtEmail) {
+        this.txtEmail = txtEmail;
+    }
+
+    public JTextField getTxtFullname() {
+        return txtFullname;
+    }
+
+    public void setTxtFullname(JTextField txtFullname) {
+        this.txtFullname = txtFullname;
+    }
+
+    public JTextField getTxtNumAdult() {
+        return txtNumAdult;
+    }
+
+    public void setTxtNumAdult(JTextField txtNumAdult) {
+        this.txtNumAdult = txtNumAdult;
+    }
+
+    public JTextField getTxtNumChildren() {
+        return txtNumChildren;
+    }
+
+    public void setTxtNumChildren(JTextField txtNumChildren) {
+        this.txtNumChildren = txtNumChildren;
+    }
+
+    public JTextField getTxtNumberMember() {
+        return txtNumberMember;
+    }
+
+    public void setTxtNumberMember(JTextField txtNumberMember) {
+        this.txtNumberMember = txtNumberMember;
+    }
+
+    public JTextField getTxtPhone() {
+        return txtPhone;
+    }
+
+    public void setTxtPhone(JTextField txtPhone) {
+        this.txtPhone = txtPhone;
+    }
+
+    public JTextField getTxtRegistrationID() {
+        return txtRegistrationID;
+    }
+
+    public void setTxtRegistrationID(JTextField txtRegistrationID) {
+        this.txtRegistrationID = txtRegistrationID;
+    }
+
+    public JTextField getTxtSearchName() {
+        return txtSearchName;
+    }
+
+    public void setTxtSearchName(JTextField txtSearchName) {
+        this.txtSearchName = txtSearchName;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,9 +210,9 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
         btnFindID = new javax.swing.JButton();
         txtRegistrationID = new javax.swing.JTextField();
         txtFullname = new javax.swing.JTextField();
@@ -105,11 +275,11 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
 
         jLabel10.setText("Include:");
 
-        jButton1.setText("New");
+        btnNew.setText("New");
 
-        jButton2.setText("Save");
+        btnSave.setText("Save");
 
-        jButton3.setText("Remove");
+        btnRemove.setText("Remove");
 
         btnFindID.setText("Find by ID");
 
@@ -182,11 +352,11 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(54, 54, 54)
-                                .addComponent(jButton2)
+                                .addComponent(btnSave)
                                 .addGap(76, 76, 76)
-                                .addComponent(jButton3)))
+                                .addComponent(btnRemove)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -233,9 +403,9 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
                     .addComponent(jLabel12))
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnNew)
+                    .addComponent(btnSave)
+                    .addComponent(btnRemove))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
 
@@ -346,7 +516,9 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FamilyHealthcareView().setVisible(true);
+                FamilyHealthcareView view = new FamilyHealthcareView();
+                RegistrationController registrationController = new RegistrationController(view);
+                registrationController.init();
             }
         });
     }
@@ -354,11 +526,11 @@ public class FamilyHealthcareView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFindID;
     private javax.swing.JButton btnGetAll;
+    private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearchName;
     private javax.swing.JComboBox<String> cbSortByName;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

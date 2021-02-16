@@ -17,4 +17,6 @@ import java.util.ArrayList;
 public interface IRegistrationsRMI extends Remote{
 
     public ArrayList<Registrations> getAllRegistrations() throws RemoteException;
+    
+    public Registrations findByRegistrationID(String id) throws RemoteException;
 }

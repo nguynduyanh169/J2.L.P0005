@@ -19,7 +19,7 @@ public class RMIserver {
         try {
             IRegistrationsRMI registrationsRMI = new RegistrationsRMI();
             LocateRegistry.createRegistry(6789);
-            Naming.bind("rmi://192.168.1.8:6789/RegistrationsRMI", registrationsRMI);
+            Naming.bind("rmi://192.168.1.7:6789/RegistrationsRMI", registrationsRMI);
         } catch (Exception e) {
             e.printStackTrace();
         }
