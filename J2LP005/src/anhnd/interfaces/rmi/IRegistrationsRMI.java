@@ -19,4 +19,8 @@ public interface IRegistrationsRMI extends Remote{
     public ArrayList<Registrations> getAllRegistrations() throws RemoteException;
     
     public Registrations findByRegistrationID(String id) throws RemoteException;
+    
+    public boolean createRegistration(Registrations registration) throws RemoteException;
+    
+    public boolean updateRegistration(Registrations registration) throws RemoteException;
 }

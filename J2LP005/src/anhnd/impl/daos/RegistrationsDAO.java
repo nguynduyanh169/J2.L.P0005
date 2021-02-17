@@ -60,4 +60,46 @@ public class RegistrationsDAO implements IRegistrationsDAO {
         }
         return registration;
     }
+
+    @Override
+    public boolean createRegistration(Registrations registration) {
+        boolean check = false;
+        try {
+            session.getTransaction().begin();
+            check = session.save(registration) == null ? false : true;
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return check;
+    }
+
+    @Override
+    public boolean updateRegistration(Registrations registration) {
+        boolean check = false;
+        try {
+            System.out.println(registration.getRegistrationId());
+            session.getTransaction().begin();
+            String sql = "Update Registrations set Fullname = ?, Phone = ?, Email = ?, Address = ?, Age = ?, Gender = ?, NumberOfMember = ?, NumberOfChildren = ?, NumberOfAdults = ? "
+                    + "where RegistrationID = ?";
+            Query query = session.createQuery(sql);
+            query.setString(0, registration.getFullname());
+            query.setString(1, registration.getPhone());
+            query.setString(2, registration.getEmail());
+            query.setString(3, registration.getAddress());
+            query.setInteger(4, registration.getAge());
+            query.setBoolean(5, registration.getGender());
+            query.setInteger(6, registration.getNumberOfMember());
+            query.setInteger(7, registration.getNumberOfChildren());
+            query.setInteger(8, registration.getNumberOfAdults());
+            query.setString(9, registration.getRegistrationId());
+            check = query.executeUpdate() > 0;
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return check;
+    }
 }

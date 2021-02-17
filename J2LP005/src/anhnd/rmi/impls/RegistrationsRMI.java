@@ -36,5 +36,17 @@ public class RegistrationsRMI extends UnicastRemoteObject implements IRegistrati
         registrationsRepository = new RegistrationsRepositoryImpl();
         return registrationsRepository.findByRegistrationID(id);
     }
+
+    @Override
+    public boolean createRegistration(Registrations registration) throws RemoteException {
+        registrationsRepository = new RegistrationsRepositoryImpl();
+        return registrationsRepository.createRegistration(registration);
+    }
+
+    @Override
+    public boolean updateRegistration(Registrations registration) throws RemoteException {
+        registrationsRepository = new RegistrationsRepositoryImpl();
+        return registrationsRepository.updateRegistration(registration);
+    }
     
 }

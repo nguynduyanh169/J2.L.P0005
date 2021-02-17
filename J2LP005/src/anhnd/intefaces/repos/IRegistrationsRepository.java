@@ -16,4 +16,8 @@ public interface IRegistrationsRepository {
     public ArrayList<Registrations> getAllRegistrations();
     
     public Registrations findByRegistrationID(String id);
+    
+    public boolean createRegistration(Registrations registration);
+    
+    public boolean updateRegistration(Registrations registration);
 }

@@ -16,4 +16,8 @@ public interface IRegistrationsDAO {
     public ArrayList<Registrations> findAllRegistrations();
     
     public Registrations findByRegistrationID(String id);
+    
+    public boolean createRegistration(Registrations registration);
+    
+    public boolean updateRegistration(Registrations registration);
 }
