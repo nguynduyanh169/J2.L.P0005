@@ -12,6 +12,7 @@ import anhnd.interfaces.rmi.IRegistrationsRMI;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -47,6 +48,25 @@ public class RegistrationsRMI extends UnicastRemoteObject implements IRegistrati
     public boolean updateRegistration(Registrations registration) throws RemoteException {
         registrationsRepository = new RegistrationsRepositoryImpl();
         return registrationsRepository.updateRegistration(registration);
+    }
+
+    @Override
+    public boolean removeRegistration(String id) throws RemoteException {
+        registrationsRepository = new RegistrationsRepositoryImpl();
+        return registrationsRepository.removeRegistration(id);
+    }
+
+    @Override
+    public ArrayList<Registrations> findRegistrationByLikeName(String keywords) throws RemoteException {
+        ArrayList<Registrations> result = new ArrayList<>();
+        registrationsRepository = new RegistrationsRepositoryImpl();
+        ArrayList<Registrations> registrations = registrationsRepository.getAllRegistrations();
+        for (Registrations registration : registrations) {
+            if(registration.getFullname().toLowerCase().contains(keywords.toLowerCase())){
+                result.add(registration);
+            }
+        }
+        return result;
     }
     
 }

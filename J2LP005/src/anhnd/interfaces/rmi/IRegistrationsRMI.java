@@ -23,4 +23,8 @@ public interface IRegistrationsRMI extends Remote{
     public boolean createRegistration(Registrations registration) throws RemoteException;
     
     public boolean updateRegistration(Registrations registration) throws RemoteException;
+    
+    public boolean removeRegistration(String id) throws RemoteException;
+    
+    public ArrayList<Registrations> findRegistrationByLikeName(String keywords) throws RemoteException;
 }

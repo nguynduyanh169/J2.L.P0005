@@ -42,5 +42,11 @@ public class RegistrationsRepositoryImpl implements IRegistrationsRepository{
         registrationsDAO = new RegistrationsDAO();
         return registrationsDAO.updateRegistration(registration);
     }
+
+    @Override
+    public boolean removeRegistration(String id) {
+        registrationsDAO = new RegistrationsDAO();
+        return registrationsDAO.removeRegistration(id);
+    }
     
 }

@@ -10,6 +10,7 @@ import anhnd.interfaces.daos.IRegistrationsDAO;
 import anhnd.utils.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -79,7 +80,6 @@ public class RegistrationsDAO implements IRegistrationsDAO {
     public boolean updateRegistration(Registrations registration) {
         boolean check = false;
         try {
-            System.out.println(registration.getRegistrationId());
             session.getTransaction().begin();
             String sql = "Update Registrations set Fullname = ?, Phone = ?, Email = ?, Address = ?, Age = ?, Gender = ?, NumberOfMember = ?, NumberOfChildren = ?, NumberOfAdults = ? "
                     + "where RegistrationID = ?";
@@ -102,4 +102,22 @@ public class RegistrationsDAO implements IRegistrationsDAO {
         }
         return check;
     }
+
+    @Override
+    public boolean removeRegistration(String id) {
+        boolean check = false;
+        try {
+            session.getTransaction().begin();
+            String sql = "Delete from Registrations where RegistrationID = ?";
+            Query query = session.createQuery(sql);
+            query.setString(0, id);
+            check = query.executeUpdate() > 0;
+            session.flush();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return check;
+    }
+
 }

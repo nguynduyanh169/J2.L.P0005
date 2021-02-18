@@ -10,8 +10,11 @@ import anhnd.entity.Registrations;
 import anhnd.interfaces.rmi.IRegistrationsRMI;
 import anhnd.view.FamilyHealthcareView;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.rmi.Naming;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,7 +28,7 @@ public class RegistrationController {
     private FamilyHealthcareView view;
     private DefaultTableModel registrationModel;
     private boolean isAddNew = true;
-    private static final String URL = "rmi://192.168.1.7:6789/RegistrationsRMI";
+    private static final String URL = "rmi://192.168.1.10:6789/RegistrationsRMI";
     private static final String REGISTRATIONID_REGEX = "^[a-zA-Z0-9 ]+$";
     private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     private static final String NUMBER_REGEX = "^[0-9]+$";
@@ -62,6 +65,40 @@ public class RegistrationController {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonSaveRegistration(evt);
+            }
+        });
+        view.getBtnRemove().addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteRegistration(evt);
+            }
+        });
+        view.getBtnSearchName().addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSearchRegistrationByName(evt);
+            }
+        });
+        view.getBtnGetAll().addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonGetAllRegistrations(evt);
+            }
+        });
+        view.getCbSortByName().addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                sortRegistrationByName(evt);
+            }
+        });
+        view.getRbMale().addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbMaleMouseClicked(evt);
+            }
+        });
+        view.getRbFemale().addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbFemaleMouseClicked(evt);
             }
         });
         getRegistrations();
@@ -175,6 +212,22 @@ public class RegistrationController {
         view.getTxtNumAdult().setText("");
     }
 
+    public void buttonDeleteRegistration(java.awt.event.ActionEvent evt) {
+        try {
+            int pos = view.getTblRegistration().getSelectedRow();
+            String registrationId = (String) view.getTblRegistration().getValueAt(pos, 0);
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            boolean check = registrationsRMI.removeRegistration(registrationId);
+            if (check == true) {
+                getRegistrations();
+            } else {
+                JOptionPane.showMessageDialog(view, "Delete failed!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void buttonSaveRegistration(java.awt.event.ActionEvent evt) {
         boolean gender = true;
         boolean invalid = false;
@@ -202,8 +255,8 @@ public class RegistrationController {
             errorMsg += "\n FullName: max length is 50";
             invalid = true;
         }
-        if (ageText.isEmpty() || !numberMemberText.matches(NUMBER_REGEX)) {
-            System.out.println(numberMemberText.contains(NUMBER_REGEX));
+        if (ageText.isEmpty() || !ageText.matches(NUMBER_REGEX)) {
+            System.out.println(ageText.matches(NUMBER_REGEX));
             errorMsg += "\n Age: must be >= 0";
             invalid = true;
         }
@@ -234,27 +287,46 @@ public class RegistrationController {
             int numberMember = Integer.valueOf(numberMemberText);
             int numberChildren = Integer.valueOf(numberChildrenText);
             int numberAdult = Integer.valueOf(numberAdultText);
-            if(isAddNew == true){
+            if (isAddNew == true) {
                 try {
-                    Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
-                    registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
-                    boolean check = registrationsRMI.createRegistration(registration);
-                    if(check == true){
-                        getRegistrations();
+                    System.out.println(checkDuplicateId(registrationId));
+                    if (checkDuplicateId(registrationId) == true) {
+                        Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
+                        registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+                        boolean check = registrationsRMI.createRegistration(registration);
+                        if (check == true) {
+                            getRegistrations();
+                            isAddNew = true;
+                            view.getTxtRegistrationID().setText("");
+                            view.getTxtRegistrationID().setEditable(true);
+                            view.getTxtFullname().setText("");
+                            view.getTxtAge().setText("");
+                            view.getRbMale().setSelected(true);
+                            view.getRbFemale().setSelected(false);
+                            view.getTxtEmail().setText("");
+                            view.getTxtPhone().setText("");
+                            view.getTxtAddress().setText("");
+                            view.getTxtNumberMember().setText("");
+                            view.getTxtNumChildren().setText("");
+                            view.getTxtNumAdult().setText("");
+                        } else {
+                            JOptionPane.showMessageDialog(view, "Create Failed!");
+                        }
                     }else{
-                        JOptionPane.showMessageDialog(view, "Create Failed!");
+                        JOptionPane.showMessageDialog(view, "Registration " + registrationId + " has been exist!");
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 try {
                     Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
                     registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
                     boolean check = registrationsRMI.updateRegistration(registration);
-                    if(check == true){
+                    if (check == true) {
                         getRegistrations();
-                    }else{
+                    } else {
                         JOptionPane.showMessageDialog(view, "Update Failed!");
                     }
                 } catch (Exception e) {
@@ -263,6 +335,126 @@ public class RegistrationController {
             }
         }
 
+    }
+
+    public void buttonSearchRegistrationByName(java.awt.event.ActionEvent evt) {
+        try {
+            String keywords = view.getTxtSearchName().getText();
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            ArrayList<Registrations> result = registrationsRMI.findRegistrationByLikeName(keywords);
+            if (result.size() > 0 || result != null) {
+                registrationModel.setRowCount(0);
+                for (Registrations registration : result) {
+                    RegistrationView registrationView = new RegistrationView();
+                    registrationView.setRegistrationId(registration.getRegistrationId());
+                    registrationView.setFullname(registration.getFullname());
+                    registrationView.setAddress(registration.getAddress());
+                    registrationView.setAge(registration.getAge());
+                    registrationView.setPhone(registration.getPhone());
+                    if (registration.getGender() == true) {
+                        registrationView.setGender("Male");
+                    } else {
+                        registrationView.setGender("Female");
+                    }
+                    registrationModel.addRow(registrationView.toVector());
+                }
+                view.getTblRegistration().updateUI();
+            } else {
+                JOptionPane.showMessageDialog(view, "Cannot find any registration with keywords: " + keywords);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void buttonGetAllRegistrations(java.awt.event.ActionEvent evt) {
+        try {
+            view.getTxtSearchName().setText("");
+            view.getCbSortByName().setSelectedIndex(0);
+            getRegistrations();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sortRegistrationByName(java.awt.event.ItemEvent evt) {
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            String selected = (String) evt.getItem();
+            if (selected.equals("Ascending")) {
+                ArrayList<RegistrationView> registrationViews = new ArrayList<>();
+                for (int i = 0; i < registrationModel.getRowCount(); i++) {
+                    String registrationId = (String) view.getTblRegistration().getValueAt(i, 0);
+                    String fullName = (String) view.getTblRegistration().getValueAt(i, 1);
+                    int age = (int) view.getTblRegistration().getValueAt(i, 2);
+                    String gender = (String) view.getTblRegistration().getValueAt(i, 3);
+                    String phone = (String) view.getTblRegistration().getValueAt(i, 4);
+                    String address = (String) view.getTblRegistration().getValueAt(i, 5);
+                    RegistrationView registrationView = new RegistrationView(registrationId, fullName, phone, address, age, gender);
+                    registrationViews.add(registrationView);
+                }
+                sortAscendingByRegistrationName(registrationViews);
+            } else if (selected.equals("Descending")) {
+                ArrayList<RegistrationView> registrationViews = new ArrayList<>();
+                for (int i = 0; i < registrationModel.getRowCount(); i++) {
+                    String registrationId = (String) view.getTblRegistration().getValueAt(i, 0);
+                    String fullName = (String) view.getTblRegistration().getValueAt(i, 1);
+                    int age = (int) view.getTblRegistration().getValueAt(i, 2);
+                    String gender = (String) view.getTblRegistration().getValueAt(i, 3);
+                    String phone = (String) view.getTblRegistration().getValueAt(i, 4);
+                    String address = (String) view.getTblRegistration().getValueAt(i, 5);
+                    RegistrationView registrationView = new RegistrationView(registrationId, fullName, phone, address, age, gender);
+                    registrationViews.add(registrationView);
+                }
+                sortDescendingByRegistrationName(registrationViews);
+            }
+        }
+    }
+
+    public void sortAscendingByRegistrationName(ArrayList<RegistrationView> registrationViews) {
+        Collections.sort(registrationViews, new Comparator<RegistrationView>() {
+            @Override
+            public int compare(RegistrationView o1, RegistrationView o2) {
+                return o1.getFullname().compareTo(o2.getFullname());
+            }
+        });
+        registrationModel.setRowCount(0);
+        for (RegistrationView registrationView : registrationViews) {
+            registrationModel.addRow(registrationView.toVector());
+        }
+        view.getTblRegistration().updateUI();
+    }
+
+    public void sortDescendingByRegistrationName(ArrayList<RegistrationView> registrationViews) {
+        Collections.sort(registrationViews, new Comparator<RegistrationView>() {
+            @Override
+            public int compare(RegistrationView o1, RegistrationView o2) {
+                return o2.getFullname().compareTo(o1.getFullname());
+            }
+        });
+        registrationModel.setRowCount(0);
+        for (RegistrationView registrationView : registrationViews) {
+            registrationModel.addRow(registrationView.toVector());
+        }
+        view.getTblRegistration().updateUI();
+    }
+
+    public void rbMaleMouseClicked(java.awt.event.MouseEvent evt) {
+        view.getRbFemale().setSelected(false);
+    }
+
+    public void rbFemaleMouseClicked(java.awt.event.MouseEvent evt) {
+        view.getRbMale().setSelected(false);
+    }
+
+    private boolean checkDuplicateId(String id) {
+        boolean check = true;
+        for (int i = 0; i < registrationModel.getRowCount(); i++) {
+            String registrationId = (String) view.getTblRegistration().getValueAt(i, 0);
+            if (registrationId.equals(id) == true) {
+                check = false;
+            }
+        }
+        return check;
     }
 
 }

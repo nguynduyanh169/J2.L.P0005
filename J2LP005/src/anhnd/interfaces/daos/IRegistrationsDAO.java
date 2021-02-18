@@ -20,4 +20,6 @@ public interface IRegistrationsDAO {
     public boolean createRegistration(Registrations registration);
     
     public boolean updateRegistration(Registrations registration);
+    
+    public boolean removeRegistration(String id);
 }

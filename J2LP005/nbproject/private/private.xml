@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/rmi/impls/RegistrationsRMI.java</file>
             <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/server/RMIserver.java</file>
-            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/interfaces/daos/IRegistrationsDAO.java</file>
-            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/impl/daos/RegistrationsDAO.java</file>
+            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/entity/RegistrationView.java</file>
             <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/controllers/RegistrationController.java</file>
-            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/intefaces/repos/IRegistrationsRepository.java</file>
-            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/interfaces/rmi/IRegistrationsRMI.java</file>
             <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/view/FamilyHealthcareView.java</file>
-            <file>file:/C:/Users/anhnd/Documents/Lab_Desktop/J2.L.P0005/J2LP005/src/anhnd/entity/Registrations.java</file>
         </group>
     </open-files>
 </project-private>

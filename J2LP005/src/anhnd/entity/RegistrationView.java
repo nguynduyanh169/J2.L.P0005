@@ -20,6 +20,18 @@ public class RegistrationView {
     private Integer age;
     private String gender;
 
+    public RegistrationView() {
+    }
+
+    public RegistrationView(String registrationId, String fullname, String phone, String address, Integer age, String gender) {
+        this.registrationId = registrationId;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.address = address;
+        this.age = age;
+        this.gender = gender;
+    }
+
     public String getRegistrationId() {
         return registrationId;
     }
