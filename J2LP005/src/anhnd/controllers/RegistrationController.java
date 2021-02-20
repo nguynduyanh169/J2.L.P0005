@@ -8,6 +8,7 @@ package anhnd.controllers;
 import anhnd.entity.RegistrationView;
 import anhnd.entity.Registrations;
 import anhnd.interfaces.rmi.IRegistrationsRMI;
+import anhnd.utils.Constants;
 import anhnd.view.FamilyHealthcareView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -28,10 +29,6 @@ public class RegistrationController {
     private FamilyHealthcareView view;
     private DefaultTableModel registrationModel;
     private boolean isAddNew = true;
-    private static final String URL = "rmi://192.168.1.10:6789/RegistrationsRMI";
-    private static final String REGISTRATIONID_REGEX = "^[a-zA-Z0-9 ]+$";
-    private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-    private static final String NUMBER_REGEX = "^[0-9]+$";
 
     public RegistrationController(FamilyHealthcareView view) {
         this.view = view;
@@ -108,7 +105,7 @@ public class RegistrationController {
 
     public void getRegistrations() {
         try {
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
             ArrayList<Registrations> result = registrationsRMI.getAllRegistrations();
             registrationModel.setRowCount(0);
             for (Registrations registration : result) {
@@ -135,7 +132,7 @@ public class RegistrationController {
         try {
             int pos = view.getTblRegistration().getSelectedRow();
             String registrationId = (String) view.getTblRegistration().getValueAt(pos, 0);
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
             Registrations registration = registrationsRMI.findByRegistrationID(registrationId);
             if (registration == null) {
                 JOptionPane.showMessageDialog(view, "Cannot view information of : " + registrationId);
@@ -167,7 +164,7 @@ public class RegistrationController {
     public void buttonFindById(java.awt.event.ActionEvent evt) {
         try {
             String registrationId = view.getTxtRegistrationID().getText().trim();
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
             Registrations registration = registrationsRMI.findByRegistrationID(registrationId);
             if (registration == null) {
                 JOptionPane.showMessageDialog(view, "Cannot view infomation of: " + registrationId);
@@ -216,7 +213,7 @@ public class RegistrationController {
         try {
             int pos = view.getTblRegistration().getSelectedRow();
             String registrationId = (String) view.getTblRegistration().getValueAt(pos, 0);
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
             boolean check = registrationsRMI.removeRegistration(registrationId);
             if (check == true) {
                 getRegistrations();
@@ -247,7 +244,7 @@ public class RegistrationController {
         String numberChildrenText = view.getTxtNumChildren().getText().trim();
         String numberAdultText = view.getTxtNumAdult().getText().trim();
         System.out.println(ageText);
-        if (registrationId.length() > 10 || registrationId.isEmpty() || !registrationId.matches(REGISTRATIONID_REGEX)) {
+        if (registrationId.length() > 10 || registrationId.isEmpty() || !registrationId.matches(Constants.REGISTRATIONID_REGEX)) {
             errorMsg += "\n RegistrationID: max length is 10, not contains special characters";
             invalid = true;
         }
@@ -255,28 +252,27 @@ public class RegistrationController {
             errorMsg += "\n FullName: max length is 50";
             invalid = true;
         }
-        if (ageText.isEmpty() || !ageText.matches(NUMBER_REGEX)) {
-            System.out.println(ageText.matches(NUMBER_REGEX));
+        if (ageText.isEmpty() || !ageText.matches(Constants.AGE_REGEX)) {
             errorMsg += "\n Age: must be >= 0";
             invalid = true;
         }
-        if (email.length() > 30 || email.isEmpty() || !email.matches(EMAIL_REGEX)) {
+        if (email.length() > 30 || email.isEmpty() || !email.matches(Constants.EMAIL_REGEX)) {
             errorMsg += "\n Email: max length is 30, contain only one “@” character, do not contain special characters (!, #, $)";
             invalid = true;
         }
-        if (phone.length() > 15 || phone.isEmpty() || !phone.matches(NUMBER_REGEX)) {
-            errorMsg += "\n o Phone: max length is 15, contain numeric characters only (0-9)";
+        if (phone.length() > 15 || phone.isEmpty() || !phone.matches(Constants.NUMBER_REGEX)) {
+            errorMsg += "\n Phone: max length is 15, contain numeric characters only (0-9)";
             invalid = true;
         }
-        if (numberMemberText.isEmpty() || !numberMemberText.matches(NUMBER_REGEX)) {
+        if (numberMemberText.isEmpty() || !numberMemberText.matches(Constants.NUMBER_REGEX)) {
             errorMsg += "\n Number of member: must be >= 0";
             invalid = true;
         }
-        if (numberChildrenText.isEmpty() || !numberChildrenText.matches(NUMBER_REGEX)) {
+        if (numberChildrenText.isEmpty() || !numberChildrenText.matches(Constants.NUMBER_REGEX)) {
             errorMsg += "\n Number of children: must be >= 0";
             invalid = true;
         }
-        if (numberAdultText.isEmpty() || !numberAdultText.matches(NUMBER_REGEX)) {
+        if (numberAdultText.isEmpty() || !numberAdultText.matches(Constants.NUMBER_REGEX)) {
             errorMsg += "\n Number of adult: must be >= 0";
             invalid = true;
         }
@@ -292,7 +288,7 @@ public class RegistrationController {
                     System.out.println(checkDuplicateId(registrationId));
                     if (checkDuplicateId(registrationId) == true) {
                         Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
-                        registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+                        registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
                         boolean check = registrationsRMI.createRegistration(registration);
                         if (check == true) {
                             getRegistrations();
@@ -312,7 +308,7 @@ public class RegistrationController {
                         } else {
                             JOptionPane.showMessageDialog(view, "Create Failed!");
                         }
-                    }else{
+                    } else {
                         JOptionPane.showMessageDialog(view, "Registration " + registrationId + " has been exist!");
                     }
 
@@ -322,7 +318,7 @@ public class RegistrationController {
             } else {
                 try {
                     Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
-                    registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+                    registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
                     boolean check = registrationsRMI.updateRegistration(registration);
                     if (check == true) {
                         getRegistrations();
@@ -340,9 +336,9 @@ public class RegistrationController {
     public void buttonSearchRegistrationByName(java.awt.event.ActionEvent evt) {
         try {
             String keywords = view.getTxtSearchName().getText();
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(URL);
+            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
             ArrayList<Registrations> result = registrationsRMI.findRegistrationByLikeName(keywords);
-            if (result.size() > 0 || result != null) {
+            if (result.size() > 0) {
                 registrationModel.setRowCount(0);
                 for (Registrations registration : result) {
                     RegistrationView registrationView = new RegistrationView();
@@ -360,6 +356,7 @@ public class RegistrationController {
                 }
                 view.getTblRegistration().updateUI();
             } else {
+                System.out.println("null");
                 JOptionPane.showMessageDialog(view, "Cannot find any registration with keywords: " + keywords);
             }
         } catch (Exception e) {

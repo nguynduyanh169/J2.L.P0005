@@ -7,6 +7,7 @@ package anhnd.server;
 
 import anhnd.interfaces.rmi.IRegistrationsRMI;
 import anhnd.rmi.impls.RegistrationsRMI;
+import anhnd.utils.Constants;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
@@ -15,11 +16,12 @@ import java.rmi.registry.LocateRegistry;
  * @author anhnd
  */
 public class RMIserver {
+    
     public static void main(String[] args) {
         try {
             IRegistrationsRMI registrationsRMI = new RegistrationsRMI();
             LocateRegistry.createRegistry(6789);
-            Naming.bind("rmi://192.168.1.10:6789/RegistrationsRMI", registrationsRMI);
+            Naming.bind(Constants.URL, registrationsRMI);
             System.out.println("Server running...");
         } catch (Exception e) {
             e.printStackTrace();
