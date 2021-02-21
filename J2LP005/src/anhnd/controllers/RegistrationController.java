@@ -213,13 +213,45 @@ public class RegistrationController {
         try {
             int pos = view.getTblRegistration().getSelectedRow();
             String registrationId = (String) view.getTblRegistration().getValueAt(pos, 0);
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
-            boolean check = registrationsRMI.removeRegistration(registrationId);
-            if (check == true) {
-                getRegistrations();
+            int confirm = JOptionPane.showConfirmDialog(view, "Do you want to delete " + registrationId + " ?", "Confirm delete", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
+                boolean check = registrationsRMI.removeRegistration(registrationId);
+                if (check == true) {
+                    getRegistrations();
+                    isAddNew = true;
+                    view.getTxtRegistrationID().setText("");
+                    view.getTxtRegistrationID().setEditable(true);
+                    view.getTxtFullname().setText("");
+                    view.getTxtAge().setText("");
+                    view.getRbMale().setSelected(true);
+                    view.getRbFemale().setSelected(false);
+                    view.getTxtEmail().setText("");
+                    view.getTxtPhone().setText("");
+                    view.getTxtAddress().setText("");
+                    view.getTxtNumberMember().setText("");
+                    view.getTxtNumChildren().setText("");
+                    view.getTxtNumAdult().setText("");
+                } else {
+                    JOptionPane.showMessageDialog(view, "Delete failed!");
+                }
             } else {
-                JOptionPane.showMessageDialog(view, "Delete failed!");
+                getRegistrations();
+                isAddNew = true;
+                view.getTxtRegistrationID().setText("");
+                view.getTxtRegistrationID().setEditable(true);
+                view.getTxtFullname().setText("");
+                view.getTxtAge().setText("");
+                view.getRbMale().setSelected(true);
+                view.getRbFemale().setSelected(false);
+                view.getTxtEmail().setText("");
+                view.getTxtPhone().setText("");
+                view.getTxtAddress().setText("");
+                view.getTxtNumberMember().setText("");
+                view.getTxtNumChildren().setText("");
+                view.getTxtNumAdult().setText("");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -283,52 +315,56 @@ public class RegistrationController {
             int numberMember = Integer.valueOf(numberMemberText);
             int numberChildren = Integer.valueOf(numberChildrenText);
             int numberAdult = Integer.valueOf(numberAdultText);
-            if (isAddNew == true) {
-                try {
-                    System.out.println(checkDuplicateId(registrationId));
-                    if (checkDuplicateId(registrationId) == true) {
+            if (numberChildren + numberAdult != numberMember) {
+                JOptionPane.showMessageDialog(view, "Please enter correct number of member!");
+            } else {
+                if (isAddNew == true) {
+                    try {
+                        if (checkDuplicateId(registrationId) == true) {
+                            Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
+                            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
+                            boolean check = registrationsRMI.createRegistration(registration);
+                            if (check == true) {
+                                getRegistrations();
+                                isAddNew = true;
+                                view.getTxtRegistrationID().setText("");
+                                view.getTxtRegistrationID().setEditable(true);
+                                view.getTxtFullname().setText("");
+                                view.getTxtAge().setText("");
+                                view.getRbMale().setSelected(true);
+                                view.getRbFemale().setSelected(false);
+                                view.getTxtEmail().setText("");
+                                view.getTxtPhone().setText("");
+                                view.getTxtAddress().setText("");
+                                view.getTxtNumberMember().setText("");
+                                view.getTxtNumChildren().setText("");
+                                view.getTxtNumAdult().setText("");
+                            } else {
+                                JOptionPane.showMessageDialog(view, "Create Failed!");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(view, "Registration " + registrationId + " has been exist!");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
                         Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
                         registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
-                        boolean check = registrationsRMI.createRegistration(registration);
+                        boolean check = registrationsRMI.updateRegistration(registration);
                         if (check == true) {
                             getRegistrations();
-                            isAddNew = true;
-                            view.getTxtRegistrationID().setText("");
-                            view.getTxtRegistrationID().setEditable(true);
-                            view.getTxtFullname().setText("");
-                            view.getTxtAge().setText("");
-                            view.getRbMale().setSelected(true);
-                            view.getRbFemale().setSelected(false);
-                            view.getTxtEmail().setText("");
-                            view.getTxtPhone().setText("");
-                            view.getTxtAddress().setText("");
-                            view.getTxtNumberMember().setText("");
-                            view.getTxtNumChildren().setText("");
-                            view.getTxtNumAdult().setText("");
                         } else {
-                            JOptionPane.showMessageDialog(view, "Create Failed!");
+                            JOptionPane.showMessageDialog(view, "Update Failed!");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(view, "Registration " + registrationId + " has been exist!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    Registrations registration = new Registrations(registrationId, fullName, phone, email, address, age, gender, numberMember, numberChildren, numberAdult);
-                    registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
-                    boolean check = registrationsRMI.updateRegistration(registration);
-                    if (check == true) {
-                        getRegistrations();
-                    } else {
-                        JOptionPane.showMessageDialog(view, "Update Failed!");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
+
         }
 
     }
@@ -356,7 +392,6 @@ public class RegistrationController {
                 }
                 view.getTblRegistration().updateUI();
             } else {
-                System.out.println("null");
                 JOptionPane.showMessageDialog(view, "Cannot find any registration with keywords: " + keywords);
             }
         } catch (Exception e) {
