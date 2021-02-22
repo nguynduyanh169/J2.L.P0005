@@ -124,6 +124,7 @@ public class RegistrationController {
             }
             view.getTblRegistration().updateUI();
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Failed to connect to server!");
             e.printStackTrace();
         }
     }
@@ -157,40 +158,47 @@ public class RegistrationController {
                 view.getTxtNumAdult().setText(registration.getNumberOfAdults().toString());
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Failed to connect to server!");
             e.printStackTrace();
         }
     }
 
     public void buttonFindById(java.awt.event.ActionEvent evt) {
-        try {
-            String registrationId = view.getTxtRegistrationID().getText().trim();
-            registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
-            Registrations registration = registrationsRMI.findByRegistrationID(registrationId);
-            if (registration == null) {
-                JOptionPane.showMessageDialog(view, "Cannot view infomation of: " + registrationId);
-            } else {
-                isAddNew = false;
-                view.getTxtRegistrationID().setText(registrationId);
-                view.getTxtRegistrationID().setEditable(false);
-                view.getTxtFullname().setText(registration.getFullname());
-                view.getTxtAge().setText(registration.getAge().toString());
-                if (registration.getGender() == true) {
-                    view.getRbMale().setSelected(true);
-                    view.getRbFemale().setSelected(false);
+        String registrationId = view.getTxtRegistrationID().getText().trim();
+        if (registrationId.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Please enter ID!");
+        } else {
+            try {
+                registrationsRMI = (IRegistrationsRMI) Naming.lookup(Constants.URL);
+                Registrations registration = registrationsRMI.findByRegistrationID(registrationId);
+                if (registration == null) {
+                    JOptionPane.showMessageDialog(view, "Cannot view infomation of: " + registrationId);
                 } else {
-                    view.getRbMale().setSelected(false);
-                    view.getRbFemale().setSelected(true);
+                    isAddNew = false;
+                    view.getTxtRegistrationID().setText(registrationId);
+                    view.getTxtRegistrationID().setEditable(false);
+                    view.getTxtFullname().setText(registration.getFullname());
+                    view.getTxtAge().setText(registration.getAge().toString());
+                    if (registration.getGender() == true) {
+                        view.getRbMale().setSelected(true);
+                        view.getRbFemale().setSelected(false);
+                    } else {
+                        view.getRbMale().setSelected(false);
+                        view.getRbFemale().setSelected(true);
+                    }
+                    view.getTxtEmail().setText(registration.getEmail());
+                    view.getTxtPhone().setText(registration.getPhone());
+                    view.getTxtAddress().setText(registration.getAddress());
+                    view.getTxtNumberMember().setText(registration.getNumberOfMember().toString());
+                    view.getTxtNumChildren().setText(registration.getNumberOfChildren().toString());
+                    view.getTxtNumAdult().setText(registration.getNumberOfAdults().toString());
                 }
-                view.getTxtEmail().setText(registration.getEmail());
-                view.getTxtPhone().setText(registration.getPhone());
-                view.getTxtAddress().setText(registration.getAddress());
-                view.getTxtNumberMember().setText(registration.getNumberOfMember().toString());
-                view.getTxtNumChildren().setText(registration.getNumberOfChildren().toString());
-                view.getTxtNumAdult().setText(registration.getNumberOfAdults().toString());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(view, "Failed to connect to server!");
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     public void buttonNewRegistration(java.awt.event.ActionEvent evt) {
@@ -253,6 +261,7 @@ public class RegistrationController {
             }
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Failed to connect to server!");
             e.printStackTrace();
         }
     }
@@ -347,6 +356,7 @@ public class RegistrationController {
                         }
 
                     } catch (Exception e) {
+                        JOptionPane.showMessageDialog(view, "Failed to connect to server!");
                         e.printStackTrace();
                     }
                 } else {
@@ -360,6 +370,7 @@ public class RegistrationController {
                             JOptionPane.showMessageDialog(view, "Update Failed!");
                         }
                     } catch (Exception e) {
+                        JOptionPane.showMessageDialog(view, "Failed to connect to server!");
                         e.printStackTrace();
                     }
                 }
@@ -395,6 +406,7 @@ public class RegistrationController {
                 JOptionPane.showMessageDialog(view, "Cannot find any registration with keywords: " + keywords);
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Failed to connect to server!");
             e.printStackTrace();
         }
     }
