@@ -33,7 +33,7 @@ public class RegistrationsDAO implements IRegistrationsDAO {
         ArrayList<Registrations> result = null;
         try {
             session.getTransaction().begin();
-            result = (ArrayList<Registrations>) session.createCriteria(Registrations.class).list();
+            result = (ArrayList<Registrations>) session.createCriteria(Registrations.class).setMaxResults(5).list();
             session.flush();
             session.getTransaction().commit();
         } catch (Exception e) {

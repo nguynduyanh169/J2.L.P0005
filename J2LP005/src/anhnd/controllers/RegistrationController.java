@@ -284,9 +284,8 @@ public class RegistrationController {
         String numberMemberText = view.getTxtNumberMember().getText().trim();
         String numberChildrenText = view.getTxtNumChildren().getText().trim();
         String numberAdultText = view.getTxtNumAdult().getText().trim();
-        System.out.println(ageText);
-        if (registrationId.length() > 10 || registrationId.isEmpty() || !registrationId.matches(Constants.REGISTRATIONID_REGEX)) {
-            errorMsg += "\n RegistrationID: max length is 10, not contains special characters";
+        if (registrationId.length() > 10 || registrationId.isEmpty() || !registrationId.matches(Constants.REGISTRATIONID_REGEX) || registrationId.toLowerCase().contains("admin")) {
+            errorMsg += "\n RegistrationID: max length is 10, not contains special characters and not contains admin, Admin, ADMIN, AdMin,....";
             invalid = true;
         }
         if (fullName.length() > 50 || fullName.isEmpty()) {

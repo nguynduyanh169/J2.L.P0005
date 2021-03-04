@@ -11,7 +11,7 @@ package anhnd.utils;
  */
 public class Constants {
 
-    public static final String URL = "rmi://192.168.1.4:6789/RegistrationsRMI";
+    public static final String URL = "rmi://10.1.92.158:6789/RegistrationsRMI";
     public static final String REGISTRATIONID_REGEX = "^[a-zA-Z0-9 ]+$";
     public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     public static final String NUMBER_REGEX = "^[0-9]+$";
